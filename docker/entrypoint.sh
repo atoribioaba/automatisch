@@ -7,7 +7,7 @@ cd packages/backend
 if [ ! -f /automatisch/storage/.admin_created ]; then
   echo "⏳ Creando usuario admin (primera vez)..."
   yarn db:migrate
-  node scripts/create-user.js
+  node scripts/create-user.js || echo "⚠️ Usuario ya creado o error no crítico"
   touch /automatisch/storage/.admin_created
 else
   echo "✅ Usuario admin ya existe. Iniciando servicio..."
