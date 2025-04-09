@@ -1,13 +1,16 @@
 #!/bin/sh
 
 set -e
-
 cd packages/backend
 
-if [ -n "$WORKER" ]; then
-  yarn start:worker
-else
+# Check if user admin ya fue creado
+if [ ! -f /automatisch/storage/.admin_created ]; then
+  echo "⏳ Creando usuario admin (primera vez)..."
   yarn db:migrate
-  yarn db:seed:user
-  yarn start
+  node scripts/create-user.js
+  touch /automatisch/storage/.admin_created
+else
+  echo "✅ Usuario admin ya existe. Iniciando servicio..."
 fi
+
+yarn start
